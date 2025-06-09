@@ -1,8 +1,7 @@
----
 version: "3"
 services:
   webapp:
-  container_name: zomatop
+    container_name: zomatop
     build: .
     ports:
       - "8081:80"
