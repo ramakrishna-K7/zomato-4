@@ -148,39 +148,88 @@
     const restaurants = [
       {
         name: "Burger Haven",
-        image: "https://source.unsplash.com/400x300/?burger",
+        image: "https://images.unsplash.com/photo-1606756793492-97cf5c64e8e2?auto=format&fit=crop&w=800&q=80",
         cuisine: "American",
         rating: 4.5,
         price: "$$"
       },
       {
         name: "Sushi Express",
-        image: "https://source.unsplash.com/400x300/?sushi",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
         cuisine: "Japanese",
         rating: 4.7,
         price: "$$$"
       },
       {
         name: "Pizza Palace",
-        image: "https://source.unsplash.com/400x300/?pizza",
+        image: "https://images.unsplash.com/photo-1601924582975-6d9d5bbf34c6?auto=format&fit=crop&w=800&q=80",
         cuisine: "Italian",
         rating: 4.3,
         price: "$"
       },
       {
         name: "Tandoori Flames",
-        image: "https://source.unsplash.com/400x300/?indian-food",
+        image: "https://images.unsplash.com/photo-1627662053655-f4719edbb3ed?auto=format&fit=crop&w=800&q=80",
         cuisine: "Indian",
         rating: 4.6,
         price: "$$"
       },
       {
         name: "Wrap & Roll",
-        image: "https://source.unsplash.com/400x300/?wrap,sandwich",
+        image: "https://images.unsplash.com/photo-1612874742756-c7350d46a8ed?auto=format&fit=crop&w=800&q=80",
         cuisine: "American",
         rating: 4.2,
         price: "$"
       },
       {
         name: "Spice Route",
-        image: "https://source.unsplash.com/400x300/?curry,indian",
+        image: "https://images.unsplash.com/photo-1600628422012-85946c012a1a?auto=format&fit=crop&w=800&q=80",
+        cuisine: "Indian",
+        rating: 4.4,
+        price: "$$$"
+      }
+    ];
+
+    const grid = document.getElementById('restaurantGrid');
+    const searchInput = document.getElementById('searchInput');
+    const filterCuisine = document.getElementById('filterCuisine');
+
+    function renderRestaurants(list) {
+      grid.innerHTML = '';
+      list.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${r.image}" alt="${r.name}">
+          <div class="card-body">
+            <h2>${r.name}</h2>
+            <p>${r.cuisine} Cuisine</p>
+            <div class="details">
+              <span>⭐ ${r.rating}</span>
+              <span>${r.price}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterRestaurants() {
+      const text = searchInput.value.toLowerCase();
+      const cuisine = filterCuisine.value;
+      const filtered = restaurants.filter(r => {
+        return (
+          (r.name.toLowerCase().includes(text) || r.cuisine.toLowerCase().includes(text)) &&
+          (cuisine === "" || r.cuisine === cuisine)
+        );
+      });
+      renderRestaurants(filtered);
+    }
+
+    searchInput.addEventListener('input', filterRestaurants);
+    filterCuisine.addEventListener('change', filterRestaurants);
+
+    renderRestaurants(restaurants);
+  </script>
+</body>
+</html>
