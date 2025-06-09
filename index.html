@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zomato UI Clone</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      transition: background 0.4s ease;
+    }
+
+    header {
+      background: white;
+      padding: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #e53935;
+    }
+
+    header p {
+      margin-top: 5px;
+      color: #555;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      padding: 20px;
+      flex-wrap: wrap;
+    }
+
+    .controls input,
+    .controls select {
+      padding: 10px;
+      flex: 1;
+      min-width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .card-body h2 {
+      font-size: 1.2rem;
+      margin: 0 0 5px;
+    }
+
+    .card-body p {
+      margin: 0;
+      color: #666;
+    }
+
+    .details {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Zomato UI Clone</h1>
+    <p>Discover great food near you</p>
+  </header>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search restaurants...">
+    <select id="filterCuisine">
+      <option value="">All Cuisines</option>
+      <option value="American">American</option>
+      <option value="Japanese">Japanese</option>
+      <option value="Italian">Italian</option>
+      <option value="Indian">Indian</option>
+    </select>
+  </div>
+
+  <div class="grid" id="restaurantGrid">
+    <!-- Cards will be injected here -->
+  </div>
+
+  <footer>
+    Made for practice · Zomato UI Clone · 2025
+  </footer>
+
+  <script>
+    const restaurants = [
+      {
+        name: "Burger Haven",
+        image: "https://source.unsplash.com/400x300/?burger",
+        cuisine: "American",
+        rating: 4.5,
+        price: "$$"
+      },
+      {
+        name: "Sushi Express",
+        image: "https://source.unsplash.com/400x300/?sushi",
+        cuisine: "Japanese",
+        rating: 4.7,
+        price: "$$$"
+      },
+      {
+        name: "Pizza Palace",
+        image: "https://source.unsplash.com/400x300/?pizza",
+        cuisine: "Italian",
+        rating: 4.3,
+        price: "$"
+      },
+      {
+        name: "Tandoori Flames",
+        image: "https://source.unsplash.com/400x300/?indian-food",
+        cuisine: "Indian",
+        rating: 4.6,
+        price: "$$"
+      },
+      {
+        name: "Wrap & Roll",
+        image: "https://source.unsplash.com/400x300/?wrap,sandwich",
+        cuisine: "American",
+        rating: 4.2,
+        price: "$"
+      },
+      {
+        name: "Spice Route",
+        image: "https://source.unsplash.com/400x300/?curry,indian",
