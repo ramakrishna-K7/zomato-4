@@ -12,7 +12,7 @@
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background-color: #f8f9fa;
+      background-color: #FFA726; /* Orange background */
       color: #333;
       transition: background 0.4s ease;
     }
@@ -29,12 +29,12 @@
     header h1 {
       margin: 0;
       font-size: 2rem;
-      color: #e53935;
+      color: #e65100; /* Darker orange for header text */
     }
 
     header p {
       margin-top: 5px;
-      color: #555;
+      color: #5d4037;
     }
 
     .controls {
@@ -56,14 +56,15 @@
     }
 
     .controls button {
-      background-color: #e53935;
+      background-color: #ef6c00; /* deep orange button */
       color: white;
       border: none;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .controls button:hover {
-      background-color: #c62828;
+      background-color: #e65100;
     }
 
     .grid {
@@ -71,25 +72,29 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
       padding: 20px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.8s ease-out forwards;
+      /* Removed opacity 0 from here to avoid flicker */
     }
 
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
+    /* Animate each card on insertion */
     .card {
       background: white;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
       transition: transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
     }
+
+    /* Stagger animation delay by CSS variable */
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+    .card:nth-child(6) { animation-delay: 0.6s; }
+    /* add more nth-child if needed */
 
     .card:hover {
       transform: scale(1.03);
@@ -108,6 +113,7 @@
     .card-body h2 {
       font-size: 1.2rem;
       margin: 0 0 5px;
+      color: #e65100;
     }
 
     .card-body p {
@@ -127,7 +133,14 @@
       text-align: center;
       padding: 30px;
       font-size: 0.9rem;
-      color: #aaa;
+      color: #5d4037;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -205,9 +218,11 @@
         return;
       }
 
-      data.forEach(resto => {
+      data.forEach((resto, i) => {
         const card = document.createElement("div");
         card.className = "card";
+        // Set animation delay to stagger cards
+        card.style.animationDelay = (i * 0.1 + 0.1) + "s";
         card.innerHTML = `
           <img src="${resto.image}" alt="${resto.name}">
           <div class="card-body">
