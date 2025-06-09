@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zomato UI Clone</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
@@ -13,6 +16,7 @@
       color: #333;
       transition: background 0.4s ease;
     }
+
     header {
       background: white;
       padding: 20px;
@@ -21,30 +25,47 @@
       z-index: 10;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
+
     header h1 {
       margin: 0;
       font-size: 2rem;
       color: #e53935;
     }
+
     header p {
       margin-top: 5px;
       color: #555;
     }
+
     .controls {
       display: flex;
       gap: 10px;
       padding: 20px;
       flex-wrap: wrap;
     }
+
     .controls input,
-    .controls select {
+    .controls select,
+    .controls button {
       padding: 10px;
-      flex: 1;
-      min-width: 200px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
       font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      min-width: 180px;
+      flex: 1;
     }
+
+    .controls button {
+      background-color: #e53935;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background-color: #c62828;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -54,12 +75,14 @@
       transform: translateY(20px);
       animation: fadeInUp 0.8s ease-out forwards;
     }
+
     @keyframes fadeInUp {
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
+
     .card {
       background: white;
       border-radius: 16px;
@@ -67,25 +90,31 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
       transition: transform 0.3s ease;
     }
+
     .card:hover {
       transform: scale(1.03);
     }
+
     .card img {
       width: 100%;
       height: 180px;
       object-fit: cover;
     }
+
     .card-body {
       padding: 16px;
     }
+
     .card-body h2 {
       font-size: 1.2rem;
       margin: 0 0 5px;
     }
+
     .card-body p {
       margin: 0;
       color: #666;
     }
+
     .details {
       display: flex;
       justify-content: space-between;
@@ -93,6 +122,7 @@
       font-size: 0.9rem;
       color: #888;
     }
+
     footer {
       text-align: center;
       padding: 30px;
@@ -116,9 +146,12 @@
       <option value="Italian">Italian</option>
       <option value="Chinese">Chinese</option>
     </select>
+    <button id="searchButton">Search</button>
   </div>
 
-  <div class="grid" id="restaurantGrid"></div>
+  <div class="grid" id="restaurantGrid">
+    <!-- Cards will be injected here -->
+  </div>
 
   <footer>
     Made for practice · Zomato UI Clone · 2025
@@ -127,66 +160,62 @@
   <script>
     const restaurants = [
       {
-        name: "Burger Point",
-        image: "https://images.unsplash.com/photo-1606755962773-982a3588b5d4?auto=format&fit=crop&w=800&q=80",
+        name: "Burger Haven",
+        image: "https://cdn.pixabay.com/photo/2014/10/23/18/05/burger-500054_1280.jpg",
         cuisine: "American",
         rating: 4.5,
         price: "$$"
       },
       {
-        name: "Pizza Hub",
-        image: "https://images.unsplash.com/photo-1601924582975-6d9d5bbf34c6?auto=format&fit=crop&w=800&q=80",
+        name: "Pizza Palace",
+        image: "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg",
         cuisine: "Italian",
+        rating: 4.3,
+        price: "$"
+      },
+      {
+        name: "Royal Biryani",
+        image: "https://cdn.pixabay.com/photo/2021/12/18/07/42/biryani-6877384_1280.jpg",
+        cuisine: "Indian",
         rating: 4.7,
         price: "$$"
       },
       {
-        name: "Hyderabadi Biryani",
-        image: "https://images.unsplash.com/photo-1620912189865-90ba9e83768b?auto=format&fit=crop&w=800&q=80",
-        cuisine: "Indian",
-        rating: 4.8,
-        price: "$$$"
-      },
-      {
-        name: "Chow Mein Express",
-        image: "https://images.unsplash.com/photo-1606788075761-c7435b4b0a4b?auto=format&fit=crop&w=800&q=80",
+        name: "Chinatown Deli",
+        image: "https://cdn.pixabay.com/photo/2021/04/28/18/54/noodles-6215670_1280.jpg",
         cuisine: "Chinese",
-        rating: 4.2,
-        price: "$"
-      },
-      {
-        name: "Paneer Tikka Grill",
-        image: "https://images.unsplash.com/photo-1617196038434-d88193459ff1?auto=format&fit=crop&w=800&q=80",
-        cuisine: "Indian",
-        rating: 4.6,
-        price: "$$"
-      },
-      {
-        name: "Fried Chicken Co.",
-        image: "https://images.unsplash.com/photo-1625940419832-989a54c38795?auto=format&fit=crop&w=800&q=80",
-        cuisine: "American",
         rating: 4.4,
         price: "$$"
+      },
+      {
+        name: "Wrap & Roll",
+        image: "https://cdn.pixabay.com/photo/2018/02/01/10/56/wrap-3120001_1280.jpg",
+        cuisine: "American",
+        rating: 4.2,
+        price: "$"
       }
     ];
 
-    const grid = document.getElementById('restaurantGrid');
-    const searchInput = document.getElementById('searchInput');
-    const filterCuisine = document.getElementById('filterCuisine');
+    function renderRestaurants(data) {
+      const grid = document.getElementById("restaurantGrid");
+      grid.innerHTML = "";
 
-    function renderRestaurants(list) {
-      grid.innerHTML = '';
-      list.forEach(r => {
-        const card = document.createElement('div');
-        card.className = 'card';
+      if (data.length === 0) {
+        grid.innerHTML = "<p>No restaurants found.</p>";
+        return;
+      }
+
+      data.forEach(resto => {
+        const card = document.createElement("div");
+        card.className = "card";
         card.innerHTML = `
-          <img src="${r.image}" alt="${r.name}">
+          <img src="${resto.image}" alt="${resto.name}">
           <div class="card-body">
-            <h2>${r.name}</h2>
-            <p>${r.cuisine} Cuisine</p>
+            <h2>${resto.name}</h2>
+            <p>${resto.cuisine}</p>
             <div class="details">
-              <span>⭐ ${r.rating}</span>
-              <span>${r.price}</span>
+              <span>⭐ ${resto.rating}</span>
+              <span>${resto.price}</span>
             </div>
           </div>
         `;
@@ -195,18 +224,21 @@
     }
 
     function filterRestaurants() {
-      const text = searchInput.value.toLowerCase();
-      const cuisine = filterCuisine.value;
-      const filtered = restaurants.filter(r =>
-        (r.name.toLowerCase().includes(text) || r.cuisine.toLowerCase().includes(text)) &&
-        (cuisine === "" || r.cuisine === cuisine)
-      );
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const cuisine = document.getElementById("filterCuisine").value;
+
+      const filtered = restaurants.filter(resto => {
+        const matchName = resto.name.toLowerCase().includes(search);
+        const matchCuisine = cuisine ? resto.cuisine === cuisine : true;
+        return matchName && matchCuisine;
+      });
+
       renderRestaurants(filtered);
     }
 
-    searchInput.addEventListener('input', filterRestaurants);
-    filterCuisine.addEventListener('change', filterRestaurants);
+    document.getElementById("searchButton").addEventListener("click", filterRestaurants);
 
+    // Initial render
     renderRestaurants(restaurants);
   </script>
 </body>
