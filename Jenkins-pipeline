@@ -16,11 +16,16 @@ pipeline {
             steps{
                 script{
                     withDockerRegistry(credentialsId: 'dockerhub') {
-                    sh "docker tag zomato ramakrishna737/zomato:v2"
-                    sh " docker-compose up -d"
+                    sh "docker tag zomato ramakrishna737/foodsite:v1"
+                    sh " docker push ramakrishna737/foodsite:v1"
                    }
                 }
             }
         }
+       stage("deploy"){
+           steps{
+               sh " docker-compose up -d"
+           }
+       }
     }
 }
