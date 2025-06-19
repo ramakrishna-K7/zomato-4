@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('code checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'Github_usercred', url: 'https://github.com/ramakrishna-K7/zomato-4.git'
+            }
+        }
+        stage("build image"){
+            steps{
+                sh "docker build -t zomato ."
+            }
+        }
+        stage("push to the docker hub"){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'dockerhub') {
+                    sh "docker tag zomato ramakrishna737/zomato:v1"
+                    sh " docker-compose up -d"
+                   }
+                }
+            }
+        }
+    }
+}
